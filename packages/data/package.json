@@ -1,0 +1,18 @@
+{
+  "name": "trading-service",
+  "version": "1.0.0",
+  "description": "trading service",
+  "main": "index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "trading"
+  ],
+  "author": "taterboom",
+  "license": "ISC",
+  "devDependencies": {}
+}
