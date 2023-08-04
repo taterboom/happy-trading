@@ -1,8 +1,7 @@
 {
-  "name": "trading-service",
+  "name": "happy-trading",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "devDependencies": {
     "@types/jest": "^29.5.3",
     "jest": "^29.6.1",

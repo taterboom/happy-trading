@@ -10,7 +10,7 @@ describe("Bot", () => {
     bot.context.on("afterTick", (result) => {
       console.log("st", result)
       done()
-      // TODO plugin: DB, Strategy, Monitor
+      // TODO plugin: DB, Strategy, Monitor, Notification, API Proxy
       // save db
       result.forEach((row) => {
         // check time
