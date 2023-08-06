@@ -1,7 +1,7 @@
 import Axios from "axios"
 import { decode } from "iconv-lite"
 import { PriceItem } from "../DataService"
-import { calcFixedPriceNumber, formatNumber, randHeader } from "./utils"
+import { calcFixedPriceNumber, formatNumber, pick, randHeader } from "./utils"
 
 const globalState: Record<string, any> = {}
 
@@ -276,5 +276,5 @@ export default async function getStockData(codes: Array<string>): Promise<Array<
   globalState.hfStockCount = hfStockCount
   globalState.noDataStockCount = noDataStockCount
 
-  return stockList
+  return pick(stockList, ["code", "time", "open", "close", "low", "high", "volume", "amount"])
 }

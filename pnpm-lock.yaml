@@ -31,6 +31,17 @@ importers:
     devDependencies:
       '@types/cron': 2.0.1
 
+  packages/monitor:
+    specifiers:
+      '@happy-trading/core': workspace:^1.0.0
+      '@happy-trading/plugin-storage': workspace:^1.0.0
+      dayjs: ^1.11.9
+    dependencies:
+      dayjs: 1.11.9
+    devDependencies:
+      '@happy-trading/core': link:../core
+      '@happy-trading/plugin-storage': link:../plugin-storage
+
   packages/plugin-storage:
     specifiers:
       '@happy-trading/core': workspace:^1.0.0
@@ -38,6 +49,12 @@ importers:
     devDependencies:
       '@happy-trading/core': link:../core
       esbuild: 0.18.17
+
+  packages/utils:
+    specifiers:
+      '@happy-trading/core': workspace:^1.0.0
+    devDependencies:
+      '@happy-trading/core': link:../core
 
 packages:
 

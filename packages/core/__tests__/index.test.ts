@@ -5,7 +5,7 @@ describe("Bot", () => {
     const db = {
       xxx: [], // dataframe
     }
-    const bot = new Bot(["sh600030"])
+    const bot = new Bot({ codes: ["sh600030"] })
     bot.start()
     bot.context.on("afterTick", (result) => {
       console.log("st", result)

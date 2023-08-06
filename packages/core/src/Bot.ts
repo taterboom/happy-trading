@@ -20,8 +20,11 @@ export class Bot {
 
   context: Context = new Context()
   plugins: Plugin[] = [...Bot.BUILT_IN_PLUGINS]
+  debug: boolean = false
 
-  constructor(codes?: string[]) {
+  constructor(options: { codes?: string[]; debug?: boolean } = {}) {
+    const { codes, debug = false } = options
+    this.debug = debug
     if (codes) {
       this.context.codes = codes
     }
@@ -42,14 +45,13 @@ export class Bot {
     const start1 = now.startOf("minute").set("hour", 9).set("minute", 30)
     const end1 = now.startOf("minute").set("hour", 11).set("minute", 30)
     const start2 = now.startOf("minute").set("hour", 13).set("minute", 0)
-    const end2 = now.startOf("minute").set("hour", 19).set("minute", 0)
+    const end2 = now.startOf("minute").set("hour", 15).set("minute", 0)
 
     const inTradingTime = (time: Dayjs) =>
-      time.isBetween(start1, end1) || time.isBetween(start2, end2)
+      this.debug || time.isBetween(start1, end1) || time.isBetween(start2, end2)
 
     if (inTradingTime(now)) {
       await this.context.emitAsync("beforeInit")
-      console.log("???")
       // TODO 提前获取前 30 分钟的数据
       // initDB(codes, options).then((db) => {
       //   options.onInit?.(db)
