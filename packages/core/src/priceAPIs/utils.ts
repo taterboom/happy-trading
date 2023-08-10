@@ -23,7 +23,7 @@ export const calcFixedPriceNumber = (
   return max
 }
 
-export const formatNumber = (val: number = 0, fixed: number = 2, format = true): string => {
+export const formatNumber = (val: number = 0, fixed: number = 2, format = false): string => {
   const num = +val
   if (format) {
     if (num > 1000 * 10000) {
@@ -32,7 +32,7 @@ export const formatNumber = (val: number = 0, fixed: number = 2, format = true):
       return (num / 10000).toFixed(fixed) + "万"
     }
   }
-  return `${num.toFixed(fixed)}`
+  return `${num.toFixed(format ? fixed : 0)}`
 }
 
 export const randHeader = () => {
@@ -71,11 +71,4 @@ export const randHeader = () => {
     "User-Agent": head_user_agent[Math.floor(Math.random() * 10)],
   }
   return result
-}
-
-export function pick(obj: any, keys: string[]) {
-  return keys.reduce((ret, key) => {
-    ret[key] = obj[key]
-    return ret
-  }, {} as any)
 }

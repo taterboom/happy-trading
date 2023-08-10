@@ -6,11 +6,12 @@ import { Context } from "./Context"
 import { Plugin } from "./Plugin"
 import { FreeAPI } from "./plugins/FreeAPI"
 import { Log } from "./plugins/Log"
+import { processOneMinuteResult } from "./utils"
 
 dayjs.extend(bt)
 dayjs.extend(utc)
 
-const A_MINITE = 60 * 1000
+const A_MINITE = process.env.NODE_ENV === "test" ? 1 * 1000 : 60 * 1000
 
 /**
  * new Bot().use([xxx, xxx]).start()
@@ -21,6 +22,8 @@ export class Bot {
   context: Context = new Context()
   plugins: Plugin[] = [...Bot.BUILT_IN_PLUGINS]
   debug: boolean = false
+  _intervalId?: any
+  _jobs: CronJob[] = []
 
   constructor(options: { codes?: string[]; debug?: boolean } = {}) {
     const { codes, debug = false } = options
@@ -56,27 +59,39 @@ export class Bot {
       // initDB(codes, options).then((db) => {
       //   options.onInit?.(db)
       // })
+      let prevResult = await this.context.dataService.fetch(this.context.codes)
       const tick = () => {
         const now = dayjs()
         if (inTradingTime(now)) {
           this.context.emit("beforeTick")
           this.context.dataService.fetch(this.context.codes).then((result) => {
-            this.context.emit("afterTick", result)
+            const formatedResult = processOneMinuteResult(result, prevResult)
+            prevResult = result
+            this.context.emit("afterTick", formatedResult)
           })
         } else {
           this.context.emit("stop")
           clearInterval(id)
         }
       }
-      tick()
+      // tick()
       const id = setInterval(tick, A_MINITE)
+      this._intervalId = id
       this.context.emit("afterInit")
     }
   }
 
   start() {
     this.run()
-    new CronJob("0 30 9 * * 1-5", () => this.run(), null, true, "Asia/Shanghai")
-    new CronJob("0 0 13 * * 1-5", () => this.run(), null, true, "Asia/Shanghai")
+    this._jobs.push(new CronJob("0 30 9 * * 1-5", () => this.run(), null, true, "Asia/Shanghai"))
+    this._jobs.push(new CronJob("0 0 13 * * 1-5", () => this.run(), null, true, "Asia/Shanghai"))
+  }
+
+  stop() {
+    this._jobs.forEach((job) => job.stop())
+    this._jobs = []
+    if (this._intervalId) {
+      clearInterval(this._intervalId)
+    }
   }
 }

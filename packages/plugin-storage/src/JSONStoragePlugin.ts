@@ -1,21 +1,18 @@
-import { Context, Plugin } from "@happy-trading/core"
+import { Plugin } from "@happy-trading/core"
 import fs from "node:fs/promises"
 import path from "node:path"
-import { Database } from "./types"
-
-declare module "@happy-trading/core" {
-  interface Context {
-    getStorage(): Database
-  }
-}
+import { MAX_SIZE } from "./constants"
+import { Database, StoragePluginContext } from "./types"
 
 export class JSONStoragePlugin implements Plugin {
   filepath?: string
   db: Database = {}
-  constructor(options: { filepath?: string }) {
+  maxSize: number
+  constructor(options: { filepath?: string; maxSize?: number }) {
     this.filepath = options.filepath
+    this.maxSize = options.maxSize || MAX_SIZE
   }
-  install(context: Context) {
+  install(context: StoragePluginContext) {
     context.on("beforeInit", () => this.initDbFromFile())
     context.on("afterTick", (result) => {
       result.forEach((item) => {
@@ -23,6 +20,9 @@ export class JSONStoragePlugin implements Plugin {
         if (!this.db[code]) {
           this.db[code] = [item]
         } else {
+          if (this.db[code].length > this.maxSize) {
+            this.db[code].shift()
+          }
           this.db[code].push(item)
         }
         // TODO check time
@@ -30,7 +30,7 @@ export class JSONStoragePlugin implements Plugin {
       })
       this.saveDbToFile()
     })
-    context.getStorage = () => {
+    context.getStorage = async () => {
       return this.db
     }
   }

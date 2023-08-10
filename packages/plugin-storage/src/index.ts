@@ -1,2 +1,3 @@
-export { JSONStoragePlugin } from "./JSONStoragePlugin"
+export * from "./JSONStoragePlugin"
+export * from "./MemoryStoragePlugin"
 export * from "./types"

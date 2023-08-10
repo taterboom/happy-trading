@@ -9,8 +9,10 @@
     "typescript": "^5.1.6"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": ""
+    "test": "pnpm --filter \"./packages/*\" test",
+    "build": "pnpm run build:core && pnpm run build:others",
+    "build:core": "pnpm --filter \"./packages/core\" build",
+    "build:others": "pnpm --filter \"./packages/{plugin-monitor,plugin-storage,utils,plugin-notification}\" build"
   },
   "keywords": [],
   "author": "",

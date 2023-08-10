@@ -1,15 +1,5 @@
+import { PriceItem } from "./types"
 import { retry } from "./utils"
-
-export type PriceItem = {
-  time: string
-  code: string
-  open: number
-  close: number
-  high: number
-  low: number
-  volume: number
-  amount: number
-}
 
 export type PriceAPI = (codes: string[]) => Promise<PriceItem[]>
 
@@ -31,6 +21,20 @@ export class DataService {
     throw new Error("No API")
   }
   fetch(codes: string[]) {
+    if (process.env.NODE_ENV === "test") {
+      return Promise.resolve<PriceItem[]>(
+        codes.map((code) => ({
+          code,
+          time: new Date().toISOString(),
+          close: 1,
+          high: 1,
+          low: 1,
+          open: 1,
+          volume: 0,
+          amount: 0,
+        }))
+      )
+    }
     return retry(() => this._fetch(codes))
   }
 }

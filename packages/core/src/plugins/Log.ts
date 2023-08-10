@@ -4,12 +4,12 @@ import { Plugin } from "../Plugin"
 
 declare module "../Context" {
   interface Context {
-    log(title: string, body?: string): void
+    log(title: string, body?: any): void
   }
 }
 
 export class Log implements Plugin {
-  static log(title: string, body?: string) {
+  static log(title: string, body?: any) {
     console.log(`${dayjs().format("YYYY-MM-DD HH:mm")} [${title}] ${body || ""}`)
   }
   install(context: Context) {
@@ -17,8 +17,8 @@ export class Log implements Plugin {
     context.on("afterInit", () => {
       context.log("Init ok")
     })
-    context.on("afterTick", () => {
-      context.log("Tick")
+    context.on("afterTick", (e) => {
+      context.log("Tick", e.map((e) => e.code).join(", "))
     })
     context.on("stop", () => {
       context.log("Stop")

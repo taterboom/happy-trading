@@ -2,27 +2,12 @@ import { Bot } from "../src/Bot"
 
 describe("Bot", () => {
   it("test", (done) => {
-    const db = {
-      xxx: [], // dataframe
-    }
-    const bot = new Bot({ codes: ["sh600030"] })
+    const bot = new Bot({ codes: ["sh600030"], debug: true })
     bot.start()
     bot.context.on("afterTick", (result) => {
-      console.log("st", result)
+      expect(result.length).toBe(1)
       done()
-      // TODO plugin: DB, Strategy, Monitor, Notification, API Proxy
-      // save db
-      result.forEach((row) => {
-        // check time
-        db[row.code].push(row)
-      })
-      bot.context.codes.forEach((code) => {
-        const rows = db[code]
-        // strategy
-        // monitor
-      })
+      bot.stop()
     })
-
-    expect(bot).not.toBeNull()
   })
 })

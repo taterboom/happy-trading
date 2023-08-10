@@ -1,5 +1,6 @@
 import { EventEmitter } from "eventemitter3"
-import { DataService, PriceItem } from "./DataService"
+import { DataService } from "./DataService"
+import { PriceItem } from "./types"
 
 export class Context<
   T extends EventEmitter.ValidEventTypes = {
