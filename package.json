@@ -12,7 +12,7 @@
     "test": "pnpm --filter \"./packages/*\" test",
     "build": "pnpm run build:core && pnpm run build:others",
     "build:core": "pnpm --filter \"./packages/core\" build",
-    "build:others": "pnpm --filter \"./packages/{plugin-monitor,plugin-storage,utils,plugin-notification}\" build"
+    "build:others": "pnpm --filter \"./packages/{plugin-*,utils}\" build"
   },
   "keywords": [],
   "author": "",

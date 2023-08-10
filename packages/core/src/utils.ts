@@ -34,3 +34,11 @@ export function pick(obj: any, keys: string[]) {
     return ret
   }, {} as any)
 }
+
+export function formatCode(code: string) {
+  return code.startsWith("6") ? `sh${code}` : `sz${code}`
+}
+
+export function parseCode(code: string) {
+  return code.match(/(\d{6})/)?.[0] || code
+}

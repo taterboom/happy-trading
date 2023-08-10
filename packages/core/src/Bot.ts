@@ -17,10 +17,8 @@ const A_MINITE = process.env.NODE_ENV === "test" ? 1 * 1000 : 60 * 1000
  * new Bot().use([xxx, xxx]).start()
  */
 export class Bot {
-  static BUILT_IN_PLUGINS: Plugin[] = []
-
   context: Context = new Context()
-  plugins: Plugin[] = [...Bot.BUILT_IN_PLUGINS]
+  plugins: Plugin[] = []
   debug: boolean = false
   _intervalId?: any
   _jobs: CronJob[] = []

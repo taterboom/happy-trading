@@ -15,6 +15,9 @@ type EnhancedDatabase = {
   }
 }
 
+/**
+ * @default { 1: -0.005, 5: -0.008, 30: -0.013 }
+ */
 type MonitorConfig = {
   1?: number
   5?: number

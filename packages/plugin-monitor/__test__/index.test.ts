@@ -5,9 +5,9 @@ import { MonitorPlugin, monitor } from "../src/index"
 describe("monitor plugin", () => {
   it("monitor function should be ok", () => {
     const db = {
-      sh600030: [
+      600030: [
         {
-          code: "sh600030",
+          code: "600030",
           time: "2021-08-31T10:02:00.000Z",
           close: 21.5,
           open: 21.5,
@@ -17,7 +17,7 @@ describe("monitor plugin", () => {
           amount: 0,
         },
         {
-          code: "sh600030",
+          code: "600030",
           time: "2021-08-31T10:03:00.000Z",
           close: 20.5,
           open: 20.5,
@@ -39,7 +39,7 @@ describe("monitor plugin", () => {
   })
 
   it.skip("should be ok", (done) => {
-    const bot = new Bot({ codes: ["sh600030"], debug: true })
+    const bot = new Bot({ codes: ["600030"], debug: true })
     class MockNotificationPlugin {
       install(context: Context) {
         // @ts-ignore

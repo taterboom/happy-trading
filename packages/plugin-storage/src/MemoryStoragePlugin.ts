@@ -12,6 +12,7 @@ export class MemoryStoragePlugin implements Plugin {
   install(context: StoragePluginContext) {
     context.on("afterTick", (result) => {
       result.forEach((item) => {
+        // TODO 插入时间算法，抽成一个😮类
         const { code } = item
         if (!this.db[code]) {
           this.db[code] = [item]

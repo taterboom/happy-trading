@@ -1,1 +1,1 @@
-export { processStockData } from "./stock"
+export * from "./stock"

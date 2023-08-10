@@ -4,11 +4,11 @@ import { StoragePluginContext } from "../src/types"
 
 describe("plugin-storage", () => {
   it("MemoryStoragePlugin should be ok", (done) => {
-    const bot = new Bot({ codes: ["sh600030"], debug: true })
+    const bot = new Bot({ codes: ["600030"], debug: true })
     const db = {
-      sh600030: [
+      600030: [
         {
-          code: "sh600030",
+          code: "600030",
           time: "2021-01-01 09:30:00",
           open: 23.5,
           close: 23.5,

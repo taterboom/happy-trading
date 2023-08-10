@@ -1,15 +1,16 @@
 import Axios from "axios"
 import { decode } from "iconv-lite"
 import { PriceItem } from "../types"
-import { pick } from "../utils"
+import { formatCode, parseCode, pick } from "../utils"
 import { calcFixedPriceNumber, formatNumber, randHeader } from "./utils"
 
 const globalState: Record<string, any> = {}
 
-export default async function getStockData(codes: Array<string>): Promise<Array<PriceItem>> {
-  if ((codes && codes.length === 0) || !codes) {
+export default async function getStockData(rawCodes: Array<string>): Promise<Array<PriceItem>> {
+  if ((rawCodes && rawCodes.length === 0) || !rawCodes) {
     return []
   }
+  const codes = rawCodes.filter(formatCode)
 
   let aStockCount = 0
   let usStockCount = 0
@@ -277,11 +278,11 @@ export default async function getStockData(codes: Array<string>): Promise<Array<
   globalState.hfStockCount = hfStockCount
   globalState.noDataStockCount = noDataStockCount
 
-  return stockList.map((item) => {
-    const data = pick(item, ["code", "time", "price", "open", "high", "low", "volume", "amount"])
+  return stockList.map((item: any) => {
     return {
-      ...data,
-      close: data.price,
+      ...pick(item, ["time", "open", "high", "low", "volume", "amount"]),
+      code: parseCode(item.code),
+      close: item.price,
     }
   })
 }

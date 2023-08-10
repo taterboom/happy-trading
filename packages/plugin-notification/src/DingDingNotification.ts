@@ -7,7 +7,7 @@ interface DingDingNotificationPluginContextPart extends NotificationContext {
 export type DingDingNotificationPluginContext = DingDingNotificationPluginContextPart & Context
 
 type DingDingNotificationPluginConfig = {
-  hook: string
+  webhook: string
 }
 
 export class DingDingNotificationPlugin implements Plugin {
@@ -29,7 +29,7 @@ export function notifyViaDingDing(
   config: DingDingNotificationPluginConfig,
   options: NotificationOptions
 ) {
-  return fetch(config.hook, {
+  return fetch(config.webhook, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

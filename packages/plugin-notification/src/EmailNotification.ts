@@ -8,9 +8,10 @@ interface EmailNotificationPluginContextPart extends NotificationContext {
 export type DingDingNotificationPluginContext = EmailNotificationPluginContextPart & Context
 
 type EmailNotificationPluginConfig = {
-  service: string
-  sender: string
-  senderPass: string
+  host: string
+  port: number
+  user: string
+  pass: string
   from: string
   to: string
 }
@@ -22,16 +23,21 @@ export class EmailNotificationPlugin implements Plugin {
   }
   install(context: DingDingNotificationPluginContext) {
     context.notifyViaEmail = (options: NotificationOptions) => mailer(this.config, options)
+    context.on("notify", (options: NotificationOptions) => {
+      context.notifyViaEmail(options)
+    })
   }
 }
 
 export async function mailer(config: EmailNotificationPluginConfig, options: NotificationOptions) {
   const { title, body } = options
   const transporter = nodemailer.createTransport({
-    service: config.service,
+    host: config.host,
+    port: config.port,
+    secure: true,
     auth: {
-      user: config.sender,
-      pass: config.senderPass,
+      user: config.user,
+      pass: config.pass,
     },
   })
 

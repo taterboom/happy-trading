@@ -20,6 +20,9 @@ export class ResendNotificationPlugin implements Plugin {
   }
   install(context: DingDingNotificationPluginContext) {
     context.notifyViaResend = (options: NotificationOptions) => resend(this.config, options)
+    context.on("notify", (options: NotificationOptions) => {
+      context.notifyViaResend(options)
+    })
   }
 }
 
