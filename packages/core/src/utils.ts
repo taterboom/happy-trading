@@ -35,8 +35,10 @@ export function pick(obj: any, keys: string[]) {
   }, {} as any)
 }
 
+// sh prefix: 5, 6
+// sz prefix: 0, 1, 3
 export function formatCode(code: string) {
-  return code.startsWith("6") ? `sh${code}` : `sz${code}`
+  return /^(5|6)/.test(code) ? `sh${code}` : `sz${code}`
 }
 
 export function parseCode(code: string) {

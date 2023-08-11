@@ -3,7 +3,7 @@ import db from "./mock.json"
 
 describe("utils/stock", () => {
   it("processStockData should be ok", () => {
-    const data = processStockData(db.600030)
+    const data = processStockData(db["600030"])
     expect(data).toEqual({
       "5": [
         {

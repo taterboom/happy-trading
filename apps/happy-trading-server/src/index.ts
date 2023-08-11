@@ -8,8 +8,7 @@ import * as dotenv from "dotenv"
 
 dotenv.config()
 
-const bot = new Bot({ debug: true })
-bot
+new Bot({ debug: process.env.NODE_ENV === "development" })
   .use(
     new NotionGetCodesPlugin({
       databaseId: process.env.NOTION_DATABASE_ID!,
@@ -40,4 +39,4 @@ bot
     })
   )
   .use(new MonitorPlugin())
-bot.start()
+  .start()

@@ -14,7 +14,7 @@ importers:
       ts-jest: 29.1.1_i6gtp52dwlhvyn32a6bohskwlu
       typescript: 5.1.6
 
-  apps/happy-trading:
+  apps/happy-trading-server:
     specifiers:
       '@happy-trading/core': workspace:^1.0.0
       '@happy-trading/plugin-codes': workspace:^1.0.0
