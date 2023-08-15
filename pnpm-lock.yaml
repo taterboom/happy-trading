@@ -89,7 +89,10 @@ importers:
   packages/plugin-storage:
     specifiers:
       '@happy-trading/core': workspace:^1.0.0
+      dayjs: ^1.11.9
       esbuild: ^0.18.17
+    dependencies:
+      dayjs: 1.11.9
     devDependencies:
       '@happy-trading/core': link:../core
       esbuild: 0.18.17

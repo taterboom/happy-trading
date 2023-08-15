@@ -14,5 +14,8 @@
   "devDependencies": {
     "@happy-trading/core": "workspace:^1.0.0",
     "esbuild": "^0.18.17"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.9"
   }
 }

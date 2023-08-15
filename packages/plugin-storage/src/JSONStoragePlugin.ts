@@ -3,6 +3,7 @@ import fs from "node:fs/promises"
 import path from "node:path"
 import { MAX_SIZE } from "./constants"
 import { Database, StoragePluginContext } from "./types"
+import { simpleInsertInDb } from "./utils"
 
 export class JSONStoragePlugin implements Plugin {
   filepath?: string
@@ -16,17 +17,7 @@ export class JSONStoragePlugin implements Plugin {
     context.on("beforeInit", () => this.initDbFromFile())
     context.on("afterTick", (result) => {
       result.forEach((item) => {
-        const { code } = item
-        if (!this.db[code]) {
-          this.db[code] = [item]
-        } else {
-          if (this.db[code].length > this.maxSize) {
-            this.db[code].shift()
-          }
-          this.db[code].push(item)
-        }
-        // TODO check time
-        // find the position where item.time > prev time and item.time < next time, and insert there
+        simpleInsertInDb(this.db, item, this.maxSize)
       })
       this.saveDbToFile()
     })
