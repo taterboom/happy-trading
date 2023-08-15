@@ -1,16 +1,17 @@
 import { Bot } from "@happy-trading/core"
-import { NotionGetCodesPlugin } from "@happy-trading/plugin-codes/dist/NotionGetCodes"
 import { MonitorPlugin } from "@happy-trading/plugin-monitor"
 import { DingDingNotificationPlugin } from "@happy-trading/plugin-notification/dist/DingDingNotification"
 import { EmailNotificationPlugin } from "@happy-trading/plugin-notification/dist/EmailNotification"
 import { JSONStoragePlugin } from "@happy-trading/plugin-storage"
+import { DivergencePlugin } from "@happy-trading/plugin-strategy/dist/divergence"
 import * as dotenv from "dotenv"
+import { NotionGetInfoPlugin } from "./NotionGetInfoPlugin"
 
 dotenv.config()
 
 new Bot({ debug: process.env.NODE_ENV === "development" })
   .use(
-    new NotionGetCodesPlugin({
+    new NotionGetInfoPlugin({
       databaseId: process.env.NOTION_DATABASE_ID!,
       notionKey: process.env.NOTION_KEY!,
     })
@@ -39,4 +40,5 @@ new Bot({ debug: process.env.NODE_ENV === "development" })
     })
   )
   .use(new MonitorPlugin())
+  .use(new DivergencePlugin())
   .start()
