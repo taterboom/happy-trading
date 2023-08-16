@@ -17,10 +17,21 @@ export class DingDingNotificationPlugin implements Plugin {
   }
   install(context: DingDingNotificationPluginContext) {
     context.notifyViaDingDing = async (options) => {
-      return notifyViaDingDing(this.config, options)
+      context.log("DingDingNotificationPlugin", JSON.stringify(options))
+      try {
+        return notifyViaDingDing(this.config, options)
+      } catch (err: any) {
+        context.log("DingDingNotificationPlugin Error", err?.message || "error")
+        throw err
+      }
     }
     context.on("notify", (options: NotificationOptions) => {
       context.notifyViaDingDing(options)
+    })
+    context.on("error", (e) => {
+      if (e?.type === "beforeInit") {
+        context.notifyViaDingDing({ title: "Happy-Trading Error", body: JSON.stringify(e) })
+      }
     })
   }
 }

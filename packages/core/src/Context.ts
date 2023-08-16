@@ -1,9 +1,11 @@
 import { EventEmitter } from "eventemitter3"
 import { DataService } from "./DataService"
+// extend Context with log funciton
+import "./plugins/Log"
 import { PriceItem } from "./types"
 
 export type ContextError = {
-  type: "fetch"
+  type: "fetch" | "beforeInit"
   error: any
 }
 

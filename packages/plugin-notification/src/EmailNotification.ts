@@ -5,7 +5,7 @@ import { NotificationContext, NotificationOptions } from "./types"
 interface EmailNotificationPluginContextPart extends NotificationContext {
   notifyViaEmail(options: NotificationOptions): Promise<void>
 }
-export type DingDingNotificationPluginContext = EmailNotificationPluginContextPart & Context
+export type EmailNotificationPluginContext = EmailNotificationPluginContextPart & Context
 
 type EmailNotificationPluginConfig = {
   host: string
@@ -21,10 +21,23 @@ export class EmailNotificationPlugin implements Plugin {
   constructor(config: EmailNotificationPluginConfig) {
     this.config = config
   }
-  install(context: DingDingNotificationPluginContext) {
-    context.notifyViaEmail = (options: NotificationOptions) => mailer(this.config, options)
+  install(context: EmailNotificationPluginContext) {
+    context.notifyViaEmail = (options: NotificationOptions) => {
+      context.log("EmailNotificationPlugin", JSON.stringify(options))
+      try {
+        return mailer(this.config, options)
+      } catch (err: any) {
+        context.log("EmailNotificationPlugin Error", err?.message || "error")
+        throw err
+      }
+    }
     context.on("notify", (options: NotificationOptions) => {
       context.notifyViaEmail(options)
+    })
+    context.on("error", (e) => {
+      if (e?.type === "beforeInit") {
+        context.notifyViaEmail({ title: "Happy-Trading Error", body: JSON.stringify(e) })
+      }
     })
   }
 }

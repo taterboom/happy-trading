@@ -23,16 +23,17 @@ export const calcFixedPriceNumber = (
   return max
 }
 
-export const formatNumber = (val: number = 0, fixed: number = 2, format = false): string => {
+export const formatNumber = (val: number = 0, fixed: number = 2, format = false): number => {
   const num = +val
-  if (format) {
-    if (num > 1000 * 10000) {
-      return (num / (10000 * 10000)).toFixed(fixed) + "亿"
-    } else if (num > 1000) {
-      return (num / 10000).toFixed(fixed) + "万"
-    }
-  }
-  return `${num.toFixed(format ? fixed : 0)}`
+  return num
+  // if (format) {
+  //   if (num > 1000 * 10000) {
+  //     return (num / (10000 * 10000)).toFixed(fixed) + "亿"
+  //   } else if (num > 1000) {
+  //     return (num / 10000).toFixed(fixed) + "万"
+  //   }
+  // }
+  // return `${num.toFixed(format ? fixed : 0)}`
 }
 
 export const randHeader = () => {

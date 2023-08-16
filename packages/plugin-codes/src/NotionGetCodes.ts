@@ -13,8 +13,14 @@ export class NotionGetCodesPlugin implements Plugin {
   }
   install(context: Context) {
     context.on("beforeInit", async () => {
-      const codes = await this.getCodes()
-      context.codes = codes
+      try {
+        const codes = await retry(() => this.getCodes())
+        context.log("NotionGetCodesPlugin", codes.join())
+        context.codes = codes
+      } catch (err: any) {
+        context.log("NotionGetCodesPlugin Error", err?.message || "error")
+        throw err
+      }
     })
   }
 
@@ -44,10 +50,30 @@ export class NotionGetCodesPlugin implements Plugin {
 
   async getCodes() {
     const results = await this.findItems()
-    const items = results.map((item) => {
+    const items: string[] = results.map((item) => {
       const { code } = item.properties
       return code.title[0].plain_text
     })
     return items
   }
+}
+
+// retry 3 times
+function retry<T = any>(fn: () => Promise<T>, times = 3): Promise<T> {
+  return new Promise((resolve, reject) => {
+    let count = 0
+    function run() {
+      fn()
+        .then(resolve)
+        .catch((err) => {
+          count++
+          if (count >= times) {
+            reject(err)
+          } else {
+            run()
+          }
+        })
+    }
+    run()
+  })
 }

@@ -52,7 +52,16 @@ export class Bot {
       this.debug || time.isBetween(start1, end1) || time.isBetween(start2, end2)
 
     if (inTradingTime(now)) {
-      await this.context.emitAsync("beforeInit")
+      try {
+        await this.context.emitAsync("beforeInit")
+      } catch (err) {
+        this.context.emit("error", {
+          type: "beforeInit",
+          error: err,
+        })
+        this.stop()
+        return
+      }
       // TODO 提前获取前 30 分钟的数据
       // initDB(codes, options).then((db) => {
       //   options.onInit?.(db)

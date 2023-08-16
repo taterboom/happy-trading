@@ -30,5 +30,8 @@ export class Log implements Plugin {
     context.on("stop", () => {
       context.log("Stop")
     })
+    context.on("error", (e) => {
+      context.log("Error", e.type + (e?.message ?? ""))
+    })
   }
 }

@@ -5,5 +5,5 @@ export type NotificationContext = Context<{ notify: NotificationOptions }>
 export interface NotificationOptions<T = any> {
   title: string
   body: string
-  raw: T
+  raw?: T
 }

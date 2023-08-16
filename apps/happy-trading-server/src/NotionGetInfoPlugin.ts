@@ -19,9 +19,14 @@ export class NotionGetInfoPlugin implements Plugin {
 
   install(context: DivergencePluginContext & Context) {
     context.on("beforeInit", async () => {
-      const strategies = await this.getStrategies()
-      context.DivergencePluginStrategies = strategies
-      context.codes = strategies.map((item) => item.code)
+      try {
+        const strategies = await retry(() => this.getStrategies())
+        context.DivergencePluginStrategies = strategies
+        context.codes = strategies.map((item) => item.code)
+      } catch (err: any) {
+        context.log("NotionGetInfoPlugin", err?.message || "error")
+        throw err
+      }
     })
   }
 
@@ -63,4 +68,24 @@ export class NotionGetInfoPlugin implements Plugin {
     })
     return items
   }
+}
+
+// retry 3 times
+function retry<T = any>(fn: () => Promise<T>, times = 3): Promise<T> {
+  return new Promise((resolve, reject) => {
+    let count = 0
+    function run() {
+      fn()
+        .then(resolve)
+        .catch((err) => {
+          count++
+          if (count >= times) {
+            reject(err)
+          } else {
+            run()
+          }
+        })
+    }
+    run()
+  })
 }

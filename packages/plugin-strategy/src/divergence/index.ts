@@ -21,14 +21,19 @@ export class DivergencePlugin implements Plugin {
       if (context.DivergencePluginStrategies) {
         this.strategies = context.DivergencePluginStrategies
       }
-      const db = await context.getStorage()
-      executeStrategies({
-        db,
-        strategies: this.strategies,
-        onOk: (result) => {
-          context.emit("notify", result)
-        },
-      })
+      try {
+        const db = await context.getStorage()
+        executeStrategies({
+          db,
+          strategies: this.strategies,
+          onOk: (result) => {
+            context.emit("notify", result)
+          },
+        })
+      } catch (err: any) {
+        context.log("DivergencePlugin Error", err?.message || "error")
+        throw err
+      }
     })
   }
 }

@@ -43,10 +43,15 @@ export class MonitorPlugin implements Plugin {
   }
   install(context: StoragePluginContext & NotificationContext & Context): void {
     context.on("afterTick", async (result) => {
-      const db = await context.getStorage()
-      const notification = monitor(db, this.config)
-      if (notification) {
-        return context.emit("notify", notification)
+      try {
+        const db = await context.getStorage()
+        const notification = monitor(db, this.config)
+        if (notification) {
+          return context.emit("notify", notification)
+        }
+      } catch (err: any) {
+        context.log("MonitorPlugin Error", err?.message || "error")
+        throw err
       }
     })
   }
