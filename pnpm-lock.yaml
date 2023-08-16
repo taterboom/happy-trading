@@ -51,9 +51,6 @@ importers:
     devDependencies:
       '@types/cron': 2.0.1
 
-  packages/data:
-    specifiers: {}
-
   packages/plugin-codes:
     specifiers:
       '@happy-trading/core': workspace:^1.0.0
