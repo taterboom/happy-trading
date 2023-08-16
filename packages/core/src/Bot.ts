@@ -42,7 +42,7 @@ export class Bot {
   }
 
   async run() {
-    const now = dayjs().utc().utcOffset(8)
+    const now = dayjs.utc().utcOffset(8)
     const start1 = now.startOf("minute").set("hour", 9).set("minute", 30)
     const end1 = now.startOf("minute").set("hour", 11).set("minute", 30)
     const start2 = now.startOf("minute").set("hour", 13).set("minute", 0)
@@ -62,11 +62,19 @@ export class Bot {
         const now = dayjs()
         if (inTradingTime(now)) {
           this.context.emit("beforeTick")
-          this.context.dataService.fetch(this.context.codes).then((result) => {
-            const formatedResult = processOneMinuteResult(result, prevResult)
-            prevResult = result
-            this.context.emit("afterTick", formatedResult)
-          })
+          this.context.dataService
+            .fetch(this.context.codes)
+            .then((result) => {
+              const formatedResult = processOneMinuteResult(result, prevResult)
+              prevResult = result
+              this.context.emit("afterTick", formatedResult)
+            })
+            .catch((e) => {
+              this.context.emit("error", {
+                type: "fetch",
+                error: e,
+              })
+            })
         } else {
           this.context.emit("stop")
           clearInterval(id)

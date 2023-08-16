@@ -2,6 +2,11 @@ import { EventEmitter } from "eventemitter3"
 import { DataService } from "./DataService"
 import { PriceItem } from "./types"
 
+export type ContextError = {
+  type: "fetch"
+  error: any
+}
+
 export class Context<
   T extends EventEmitter.ValidEventTypes = {
     beforeTick: void
@@ -9,6 +14,7 @@ export class Context<
     beforeInit: void
     afterInit: void
     stop: void
+    error: ContextError
   }
 > extends EventEmitter<T> {
   codes: string[] = []

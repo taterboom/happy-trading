@@ -6,6 +6,11 @@ import {
 import { Database, StoragePluginContext } from "@happy-trading/plugin-storage"
 import { processStockData } from "@happy-trading/utils"
 import dayjs from "dayjs"
+import tz from "dayjs/plugin/timezone"
+import utc from "dayjs/plugin/utc"
+
+dayjs.extend(utc)
+dayjs.extend(tz)
 
 type EnhancedDatabase = {
   [code: string]: {
@@ -106,7 +111,7 @@ export function monitor(data: Database, config: MonitorConfig): NotificationOpti
 
   if (warningInfo.length === 0) return
 
-  const title = `${dayjs().format("YYYY-MM-DD HH:mm")} 🟡 ${warningInfo
+  const title = `${dayjs.utc().tz("Asia/Shanghai").format("YYYY-MM-DD HH:mm")} 🟡 ${warningInfo
     .map((item) => item[0])
     .join("、")} 异常下跌`
   const body = warningInfo

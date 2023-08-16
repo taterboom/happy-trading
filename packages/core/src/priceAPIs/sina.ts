@@ -1,8 +1,14 @@
 import Axios from "axios"
+import dayjs from "dayjs"
+import tz from "dayjs/plugin/timezone"
+import utc from "dayjs/plugin/utc"
 import { decode } from "iconv-lite"
 import { PriceItem } from "../types"
 import { formatCode, parseCode, pick } from "../utils"
 import { calcFixedPriceNumber, formatNumber, randHeader } from "./utils"
+
+dayjs.extend(utc)
+dayjs.extend(tz)
 
 const globalState: Record<string, any> = {}
 
@@ -10,7 +16,7 @@ export default async function getStockData(rawCodes: Array<string>): Promise<Arr
   if ((rawCodes && rawCodes.length === 0) || !rawCodes) {
     return []
   }
-  const codes = rawCodes.filter(formatCode)
+  const codes = rawCodes.map(formatCode)
 
   let aStockCount = 0
   let usStockCount = 0
@@ -70,7 +76,14 @@ export default async function getStockData(rawCodes: Array<string>): Promise<Arr
               high: formatNumber(high, fixedNumber, false),
               volume: formatNumber(params[8], 2),
               amount: formatNumber(params[9], 2),
-              time: `${params[30]} ${params[31]}`,
+              time: dayjs
+                .tz(
+                  dayjs(`${params[30]} ${params[31]}`, "YYYY-MM-DD HH:mm:ss").format(
+                    "YYYY-MM-DD HH:mm:ss"
+                  ),
+                  "Asia/Shanghai"
+                )
+                .format(),
               percent: "",
             }
             aStockCount += 1

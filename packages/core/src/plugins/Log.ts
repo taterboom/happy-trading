@@ -1,6 +1,11 @@
 import dayjs from "dayjs"
+import tz from "dayjs/plugin/timezone"
+import utc from "dayjs/plugin/utc"
 import { Context } from "../Context"
 import { Plugin } from "../Plugin"
+
+dayjs.extend(utc)
+dayjs.extend(tz)
 
 declare module "../Context" {
   interface Context {
@@ -10,7 +15,9 @@ declare module "../Context" {
 
 export class Log implements Plugin {
   static log(title: string, body?: any) {
-    console.log(`${dayjs().format("YYYY-MM-DD HH:mm")} [${title}] ${body || ""}`)
+    console.log(
+      `${dayjs.utc().tz("Asia/Shanghai").format("YYYY-MM-DD HH:mm")} [${title}] ${body || ""}`
+    )
   }
   install(context: Context) {
     context.log = Log.log
