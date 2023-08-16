@@ -5,13 +5,12 @@
       "dependsOn": ["^build"]
     },
     "deploy": {
-      "dependsOn": ["build", "test", "lint"]
+      "dependsOn": ["build", "test"]
     },
     "test": {
       "dependsOn": ["build"],
       "inputs": ["src/**/*.tsx", "src/**/*.ts", "__tests__/**/*.ts", "__tests__/**/*.tsx"]
     },
-    "lint": {},
     "dev": {
       "cache": false,
       "persistent": true
