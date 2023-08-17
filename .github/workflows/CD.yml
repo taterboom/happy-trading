@@ -1,0 +1,69 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - "main"
+
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_TAG: 1.0.${{ github.run_number }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      #       -
+      #         name: Set up QEMU
+      #         uses: docker/setup-qemu-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          #           platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ github.repository }}:latest
+            ${{ env.REGISTRY }}/${{ github.repository }}:${{ env.IMAGE_TAG }}
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy package to vps
+        uses: appleboy/ssh-action@master
+        # env:
+        #   GITHUB_USERNAME: ${{ secrets.USERNAME }}
+        #   GITHUB_TOKEN: ${{ secrets. GITHUB_TOKEN }}
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          port: ${{ secrets.DEPLOY_PORT }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          # envs: GITHUB_USERNAME, GITHUB_TOKEN
+          script: |
+            docker pull ${{ env.REGISTRY }}/${{ github.repository }}:${{ env.IMAGE_TAG }}
+            docker stop ${{ secrets.DEPLOY_CONTAINER_NAME }}
+            docker system prune -f
+            docker run --name ${{ secrets.DEPLOY_CONTAINER_NAME }} \
+                -e NOTIFICATION_DINGDING_WEBHOOK="${{ secrets.NOTIFICATION_DINGDING_WEBHOOK }}" \
+                -e NOTIFICATION_EMAIL_HOST="${{ secrets.NOTIFICATION_EMAIL_HOST }}" \
+                -e NOTIFICATION_EMAIL_PORT="${{ secrets.NOTIFICATION_EMAIL_PORT }}" \
+                -e NOTIFICATION_EMAIL_USER="${{ secrets.NOTIFICATION_EMAIL_USER }}" \
+                -e NOTIFICATION_EMAIL_PASS="${{ secrets.NOTIFICATION_EMAIL_PASS }}" \
+                -e NOTIFICATION_EMAIL_FROM="${{ secrets.NOTIFICATION_EMAIL_FROM }}" \
+                -e NOTIFICATION_EMAIL_TO="${{ secrets.NOTIFICATION_EMAIL_TO }}" \
+                -e NOTION_KEY="${{ secrets.NOTION_KEY }}" \
+                -e NOTION_DATABASE_ID="${{ secrets.NOTION_DATABASE_ID }}" \
+                -d ${{ env.REGISTRY }}/${{ github.repository }}:${{ env.IMAGE_TAG }}
