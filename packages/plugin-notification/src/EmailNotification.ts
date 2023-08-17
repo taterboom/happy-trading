@@ -22,13 +22,15 @@ export class EmailNotificationPlugin implements Plugin {
     this.config = config
   }
   install(context: EmailNotificationPluginContext) {
-    context.notifyViaEmail = (options: NotificationOptions) => {
+    context.notifyViaEmail = async (options: NotificationOptions) => {
       context.log("EmailNotificationPlugin", JSON.stringify(options))
       try {
-        return mailer(this.config, options)
+        await mailer(this.config, options)
       } catch (err: any) {
-        context.log("EmailNotificationPlugin Error", err?.message || "error")
-        throw err
+        context.emit("error", {
+          type: "EmailNotificationPlugin fetch",
+          message: err?.message || "error",
+        })
       }
     }
     context.on("notify", (options: NotificationOptions) => {

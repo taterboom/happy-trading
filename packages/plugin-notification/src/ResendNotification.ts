@@ -19,13 +19,15 @@ export class ResendNotificationPlugin implements Plugin {
     this.config = config
   }
   install(context: ResendNotificationPluginContext) {
-    context.notifyViaResend = (options: NotificationOptions) => {
+    context.notifyViaResend = async (options: NotificationOptions) => {
       context.log("ResendNotificationPlugin", JSON.stringify(options))
       try {
-        return resend(this.config, options)
+        await resend(this.config, options)
       } catch (err: any) {
-        context.log("ResendNotificationPlugin Error", err?.message || "error")
-        throw err
+        context.emit("error", {
+          type: "ResendNotificationPlugin fetch",
+          message: err?.message || "error",
+        })
       }
     }
     context.on("notify", (options: NotificationOptions) => {

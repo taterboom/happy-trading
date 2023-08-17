@@ -2,7 +2,7 @@ import { Context, Plugin } from "@happy-trading/core"
 import { NotificationContext, NotificationOptions } from "./types"
 
 interface DingDingNotificationPluginContextPart extends NotificationContext {
-  notifyViaDingDing(options: NotificationOptions): Promise<Response>
+  notifyViaDingDing(options: NotificationOptions): Promise<void>
 }
 export type DingDingNotificationPluginContext = DingDingNotificationPluginContextPart & Context
 
@@ -17,12 +17,17 @@ export class DingDingNotificationPlugin implements Plugin {
   }
   install(context: DingDingNotificationPluginContext) {
     context.notifyViaDingDing = async (options) => {
-      context.log("DingDingNotificationPlugin", JSON.stringify(options))
+      context.log(
+        "DingDingNotificationPlugin",
+        JSON.stringify({ title: options.title, body: options.body })
+      )
       try {
-        return notifyViaDingDing(this.config, options)
+        await notifyViaDingDing(this.config, options)
       } catch (err: any) {
-        context.log("DingDingNotificationPlugin Error", err?.message || "error")
-        throw err
+        context.emit("error", {
+          type: "DingDingNotificationPlugin fetch",
+          message: err?.message || "error",
+        })
       }
     }
     context.on("notify", (options: NotificationOptions) => {

@@ -23,8 +23,9 @@ export class NotionGetInfoPlugin implements Plugin {
         const strategies = await retry(() => this.getStrategies())
         context.DivergencePluginStrategies = strategies
         context.codes = strategies.map((item) => item.code)
+        context.log("NotionGetInfoPlugin", context.codes.join())
       } catch (err: any) {
-        context.log("NotionGetInfoPlugin", err?.message || "error")
+        context.log("NotionGetInfoPlugin Error", err?.message || "error")
         throw err
       }
     })
