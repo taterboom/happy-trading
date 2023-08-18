@@ -18,9 +18,12 @@ new Bot({ debug: process.env.NODE_ENV === "development" })
   )
   .use(new JSONStoragePlugin({ filepath: "./db.json" }))
   .use(
-    new DingDingNotificationPlugin({
-      webhook: process.env.NOTIFICATION_DINGDING_WEBHOOK!,
-    })
+    new DingDingNotificationPlugin(
+      {
+        webhook: process.env.NOTIFICATION_DINGDING_WEBHOOK!,
+      },
+      ["warn", "alert"]
+    )
   )
   // .use(
   //   new ResendNotificationPlugin({
@@ -30,14 +33,17 @@ new Bot({ debug: process.env.NODE_ENV === "development" })
   //   })
   // )
   .use(
-    new EmailNotificationPlugin({
-      host: process.env.NOTIFICATION_EMAIL_HOST!,
-      port: +process.env.NOTIFICATION_EMAIL_PORT!,
-      user: process.env.NOTIFICATION_EMAIL_USER!,
-      pass: process.env.NOTIFICATION_EMAIL_PASS!,
-      from: process.env.NOTIFICATION_EMAIL_FROM!,
-      to: process.env.NOTIFICATION_EMAIL_TO!,
-    })
+    new EmailNotificationPlugin(
+      {
+        host: process.env.NOTIFICATION_EMAIL_HOST!,
+        port: +process.env.NOTIFICATION_EMAIL_PORT!,
+        user: process.env.NOTIFICATION_EMAIL_USER!,
+        pass: process.env.NOTIFICATION_EMAIL_PASS!,
+        from: process.env.NOTIFICATION_EMAIL_FROM!,
+        to: process.env.NOTIFICATION_EMAIL_TO!,
+      },
+      ["alert"]
+    )
   )
   .use(new MonitorPlugin())
   .use(new DivergencePlugin())

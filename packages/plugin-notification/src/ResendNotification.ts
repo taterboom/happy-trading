@@ -1,11 +1,6 @@
-import { Context, Plugin } from "@happy-trading/core"
 import { Resend } from "resend"
-import { NotificationContext, NotificationOptions } from "./types"
-
-interface ResendNotificationPluginContextPart extends NotificationContext {
-  notifyViaResend(options: NotificationOptions): Promise<any>
-}
-export type ResendNotificationPluginContext = ResendNotificationPluginContextPart & Context
+import { Notification } from "./Notification"
+import { NotificationOptions } from "./types"
 
 type ResendNotificationPluginConfig = {
   key: string
@@ -13,31 +8,9 @@ type ResendNotificationPluginConfig = {
   to: string
 }
 
-export class ResendNotificationPlugin implements Plugin {
-  config: ResendNotificationPluginConfig
-  constructor(config: ResendNotificationPluginConfig) {
-    this.config = config
-  }
-  install(context: ResendNotificationPluginContext) {
-    context.notifyViaResend = async (options: NotificationOptions) => {
-      context.log("ResendNotificationPlugin", JSON.stringify(options))
-      try {
-        await resend(this.config, options)
-      } catch (err: any) {
-        context.emit("error", {
-          type: "ResendNotificationPlugin fetch",
-          message: err?.message || "error",
-        })
-      }
-    }
-    context.on("notify", (options: NotificationOptions) => {
-      context.notifyViaResend(options)
-    })
-    context.on("error", (e) => {
-      if (e?.type === "beforeInit") {
-        context.notifyViaResend({ title: "Happy-Trading Error", body: JSON.stringify(e) })
-      }
-    })
+export class ResendNotificationPlugin extends Notification<ResendNotificationPluginConfig> {
+  notify(options: NotificationOptions<any>): Promise<any> {
+    return resend(this.config, options)
   }
 }
 

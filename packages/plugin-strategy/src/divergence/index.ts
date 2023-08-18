@@ -27,7 +27,7 @@ export class DivergencePlugin implements Plugin {
           db,
           strategies: this.strategies,
           onOk: (result) => {
-            context.emit("notify", result)
+            context.emit("notify", { ...result, level: "alert" })
           },
         })
       } catch (err: any) {

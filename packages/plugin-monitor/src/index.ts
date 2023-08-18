@@ -1,8 +1,5 @@
 import { Context, Plugin, PriceItem } from "@happy-trading/core"
-import {
-  NotificationContext,
-  NotificationOptions,
-} from "@happy-trading/plugin-notification/dist/types"
+import { NotificationContext, NotificationOptions } from "@happy-trading/plugin-notification"
 import { Database, StoragePluginContext } from "@happy-trading/plugin-storage"
 import { processStockData } from "@happy-trading/utils"
 import dayjs from "dayjs"
@@ -47,7 +44,7 @@ export class MonitorPlugin implements Plugin {
         const db = await context.getStorage()
         const notification = monitor(db, this.config)
         if (notification) {
-          return context.emit("notify", notification)
+          return context.emit("notify", { ...notification, level: "warn" })
         }
       } catch (err: any) {
         context.log("MonitorPlugin Error", err?.message || "error")

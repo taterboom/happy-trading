@@ -1,43 +1,13 @@
-import { Context, Plugin } from "@happy-trading/core"
-import { NotificationContext, NotificationOptions } from "./types"
-
-interface DingDingNotificationPluginContextPart extends NotificationContext {
-  notifyViaDingDing(options: NotificationOptions): Promise<void>
-}
-export type DingDingNotificationPluginContext = DingDingNotificationPluginContextPart & Context
+import { Notification } from "./Notification"
+import { NotificationOptions } from "./types"
 
 type DingDingNotificationPluginConfig = {
   webhook: string
 }
 
-export class DingDingNotificationPlugin implements Plugin {
-  config: DingDingNotificationPluginConfig
-  constructor(config: DingDingNotificationPluginConfig) {
-    this.config = config
-  }
-  install(context: DingDingNotificationPluginContext) {
-    context.notifyViaDingDing = async (options) => {
-      context.log(
-        "DingDingNotificationPlugin",
-        JSON.stringify({ title: options.title, body: options.body })
-      )
-      try {
-        await notifyViaDingDing(this.config, options)
-      } catch (err: any) {
-        context.emit("error", {
-          type: "DingDingNotificationPlugin fetch",
-          message: err?.message || "error",
-        })
-      }
-    }
-    context.on("notify", (options: NotificationOptions) => {
-      context.notifyViaDingDing(options)
-    })
-    context.on("error", (e) => {
-      if (e?.type === "beforeInit") {
-        context.notifyViaDingDing({ title: "Happy-Trading Error", body: JSON.stringify(e) })
-      }
-    })
+export class DingDingNotificationPlugin extends Notification<DingDingNotificationPluginConfig> {
+  notify(options: NotificationOptions<any>): Promise<any> {
+    return notifyViaDingDing(this.config, options)
   }
 }
 

@@ -1,8 +1,7 @@
-import { Context } from "@happy-trading/core"
-
-export type NotificationContext = Context<{ notify: NotificationOptions }>
+export type NotificationLevel = "remind" | "warn" | "alert"
 
 export interface NotificationOptions<T = any> {
+  level?: NotificationLevel
   title: string
   body: string
   raw?: T

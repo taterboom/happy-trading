@@ -1,11 +1,6 @@
-import { Context, Plugin } from "@happy-trading/core"
 import nodemailer from "nodemailer"
-import { NotificationContext, NotificationOptions } from "./types"
-
-interface EmailNotificationPluginContextPart extends NotificationContext {
-  notifyViaEmail(options: NotificationOptions): Promise<void>
-}
-export type EmailNotificationPluginContext = EmailNotificationPluginContextPart & Context
+import { Notification } from "./Notification"
+import { NotificationOptions } from "./types"
 
 type EmailNotificationPluginConfig = {
   host: string
@@ -16,31 +11,9 @@ type EmailNotificationPluginConfig = {
   to: string
 }
 
-export class EmailNotificationPlugin implements Plugin {
-  config: EmailNotificationPluginConfig
-  constructor(config: EmailNotificationPluginConfig) {
-    this.config = config
-  }
-  install(context: EmailNotificationPluginContext) {
-    context.notifyViaEmail = async (options: NotificationOptions) => {
-      context.log("EmailNotificationPlugin", JSON.stringify(options))
-      try {
-        await mailer(this.config, options)
-      } catch (err: any) {
-        context.emit("error", {
-          type: "EmailNotificationPlugin fetch",
-          message: err?.message || "error",
-        })
-      }
-    }
-    context.on("notify", (options: NotificationOptions) => {
-      context.notifyViaEmail(options)
-    })
-    context.on("error", (e) => {
-      if (e?.type === "beforeInit") {
-        context.notifyViaEmail({ title: "Happy-Trading Error", body: JSON.stringify(e) })
-      }
-    })
+export class EmailNotificationPlugin extends Notification<EmailNotificationPluginConfig> {
+  notify(options: NotificationOptions<any>): Promise<any> {
+    return mailer(this.config, options)
   }
 }
 
