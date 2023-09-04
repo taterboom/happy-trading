@@ -18,7 +18,7 @@ type EnhancedDatabase = {
 }
 
 /**
- * @default { 1: -0.005, 5: -0.008, 30: -0.013 }
+ * @default { 1: -0.008, 5: -0.013, 30: -0.018 }
  */
 type MonitorConfig = {
   1?: number
@@ -31,9 +31,9 @@ export class MonitorPlugin implements Plugin {
   config: MonitorConfig
   constructor(
     config: MonitorConfig = {
-      1: -0.005,
-      5: -0.008,
-      30: -0.013,
+      1: -0.008,
+      5: -0.013,
+      30: -0.018,
     }
   ) {
     this.config = config

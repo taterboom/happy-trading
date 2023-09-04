@@ -30,7 +30,7 @@ export abstract class Notification<C = any, T extends NotificationContext = Noti
       return
     }
     context.log(
-      `${Object.getPrototypeOf(this).name}`,
+      `${Object.getPrototypeOf(this)?.constructor?.name}`,
       JSON.stringify({ title: options.title, body: options.body })
     )
     try {
