@@ -1,6 +1,6 @@
 {
   "name": "@happy-trading/plugin-monitor",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -12,12 +12,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@happy-trading/utils": "workspace:^1.0.0",
+    "@happy-trading/utils": "workspace:^0.0.0",
     "dayjs": "^1.11.9"
   },
   "devDependencies": {
-    "@happy-trading/core": "workspace:^1.0.0",
-    "@happy-trading/plugin-notification": "workspace:^1.0.0",
-    "@happy-trading/plugin-storage": "workspace:^1.0.0"
+    "@happy-trading/core": "workspace:^0.0.0",
+    "@happy-trading/plugin-notification": "workspace:^0.0.0",
+    "@happy-trading/plugin-storage": "workspace:^0.0.0"
   }
 }

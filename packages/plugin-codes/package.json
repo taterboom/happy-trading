@@ -1,6 +1,6 @@
 {
   "name": "@happy-trading/plugin-codes",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@happy-trading/core": "workspace:^1.0.0",
+    "@happy-trading/core": "workspace:^0.0.0",
     "@notionhq/client": "^2.2.10"
   }
 }

@@ -13,7 +13,8 @@
     "test:coverage": "npx turbo run test -- --coverage",
     "build": "npx turbo run build",
     "docker:build": "docker build -t happy-trading .",
-    "docker:run": "docker run -d --env-file ./apps/happy-trading-server/.env happy-trading"
+    "docker:run": "docker run -d --env-file ./apps/happy-trading-server/.env happy-trading",
+    "changeset": "changeset"
   },
   "keywords": [],
   "author": "",
