@@ -19,12 +19,12 @@ importers:
 
   apps/happy-trading-server:
     specifiers:
-      '@happy-trading/core': workspace:^0.0.0
-      '@happy-trading/plugin-codes': workspace:^0.0.0
-      '@happy-trading/plugin-monitor': workspace:^0.0.0
-      '@happy-trading/plugin-notification': workspace:^0.0.0
-      '@happy-trading/plugin-storage': workspace:^0.0.0
-      '@happy-trading/plugin-strategy': workspace:^0.0.0
+      '@happy-trading/core': workspace:^0.0.1-beta.0
+      '@happy-trading/plugin-codes': workspace:^0.0.1-beta.0
+      '@happy-trading/plugin-monitor': workspace:^0.0.1-beta.0
+      '@happy-trading/plugin-notification': workspace:^0.0.1-beta.0
+      '@happy-trading/plugin-storage': workspace:^0.0.1-beta.0
+      '@happy-trading/plugin-strategy': workspace:^0.0.1-beta.0
       '@notionhq/client': ^2.2.10
       dotenv: ^16.3.1
     dependencies:
@@ -56,7 +56,7 @@ importers:
 
   packages/plugin-codes:
     specifiers:
-      '@happy-trading/core': workspace:^0.0.0
+      '@happy-trading/core': workspace:^0.0.1-beta.0
       '@notionhq/client': ^2.2.10
     dependencies:
       '@happy-trading/core': link:../core
@@ -64,10 +64,10 @@ importers:
 
   packages/plugin-monitor:
     specifiers:
-      '@happy-trading/core': workspace:^0.0.0
-      '@happy-trading/plugin-notification': workspace:^0.0.0
-      '@happy-trading/plugin-storage': workspace:^0.0.0
-      '@happy-trading/utils': workspace:^0.0.0
+      '@happy-trading/core': workspace:^0.0.1-beta.0
+      '@happy-trading/plugin-notification': workspace:^0.0.1-beta.0
+      '@happy-trading/plugin-storage': workspace:^0.0.1-beta.0
+      '@happy-trading/utils': workspace:^0.0.1-beta.0
       dayjs: ^1.11.9
     dependencies:
       '@happy-trading/utils': link:../utils
@@ -79,7 +79,7 @@ importers:
 
   packages/plugin-notification:
     specifiers:
-      '@happy-trading/core': workspace:^0.0.0
+      '@happy-trading/core': workspace:^0.0.1-beta.0
       '@types/nodemailer': ^6.4.9
       nodemailer: ^6.9.4
       resend: ^0.17.2
@@ -92,7 +92,7 @@ importers:
 
   packages/plugin-storage:
     specifiers:
-      '@happy-trading/core': workspace:^0.0.0
+      '@happy-trading/core': workspace:^0.0.1-beta.0
       dayjs: ^1.11.9
       esbuild: ^0.18.17
     dependencies:
@@ -103,10 +103,10 @@ importers:
 
   packages/plugin-strategy:
     specifiers:
-      '@happy-trading/core': workspace:^0.0.0
-      '@happy-trading/plugin-notification': workspace:^0.0.0
-      '@happy-trading/plugin-storage': workspace:^0.0.0
-      '@happy-trading/utils': workspace:^0.0.0
+      '@happy-trading/core': workspace:^0.0.1-beta.0
+      '@happy-trading/plugin-notification': workspace:^0.0.1-beta.0
+      '@happy-trading/plugin-storage': workspace:^0.0.1-beta.0
+      '@happy-trading/utils': workspace:^0.0.1-beta.0
       dayjs: ^1.11.9
     dependencies:
       '@happy-trading/core': link:../core
@@ -118,7 +118,7 @@ importers:
 
   packages/utils:
     specifiers:
-      '@happy-trading/core': workspace:^0.0.0
+      '@happy-trading/core': workspace:^0.0.1-beta.0
       dayjs: ^1.11.9
     dependencies:
       dayjs: 1.11.9

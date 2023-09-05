@@ -14,7 +14,10 @@
     "build": "npx turbo run build",
     "docker:build": "docker build -t happy-trading .",
     "docker:run": "docker run -d --env-file ./apps/happy-trading-server/.env happy-trading",
-    "changeset": "changeset"
+    "changeset": "changeset",
+    "version": "changeset version && pnpm install",
+    "prerelease": "pnpm build && pnpm test",
+    "release": "changeset publish"
   },
   "keywords": [],
   "author": "",
