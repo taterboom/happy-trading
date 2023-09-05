@@ -11,5 +11,7 @@
     "@happy-trading/plugin-strategy": "0.0.0",
     "@happy-trading/utils": "0.0.0"
   },
-  "changesets": []
+  "changesets": [
+    "tidy-flowers-decide"
+  ]
 }

@@ -1,6 +1,6 @@
 {
   "name": "@happy-trading/plugin-strategy",
-  "version": "0.0.0",
+  "version": "0.0.1-beta.0",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -15,12 +15,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@happy-trading/core": "workspace:^0.0.0",
-    "@happy-trading/utils": "workspace:^0.0.0",
+    "@happy-trading/core": "workspace:^0.0.1-beta.0",
+    "@happy-trading/utils": "workspace:^0.0.1-beta.0",
     "dayjs": "^1.11.9"
   },
   "devDependencies": {
-    "@happy-trading/plugin-notification": "workspace:^0.0.0",
-    "@happy-trading/plugin-storage": "workspace:^0.0.0"
+    "@happy-trading/plugin-notification": "workspace:^0.0.1-beta.0",
+    "@happy-trading/plugin-storage": "workspace:^0.0.1-beta.0"
   }
 }
