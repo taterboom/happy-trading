@@ -20,14 +20,18 @@ export class Bot {
   context: Context = new Context()
   plugins: Plugin[] = []
   debug: boolean = false
+  initWithPrevMinutes = 26 * 30 // 30min MACD
   _intervalId?: any
   _jobs: CronJob[] = []
 
-  constructor(options: { codes?: string[]; debug?: boolean } = {}) {
-    const { codes, debug = false } = options
+  constructor(options: { codes?: string[]; debug?: boolean; initWithPrevMinutes?: number } = {}) {
+    const { codes, debug = false, initWithPrevMinutes } = options
     this.debug = debug
     if (codes) {
       this.context.codes = codes
+    }
+    if (initWithPrevMinutes !== undefined) {
+      this.initWithPrevMinutes = initWithPrevMinutes
     }
     this.use([new FreeAPI(), new Log()])
   }
@@ -62,10 +66,22 @@ export class Bot {
         this.stop()
         return
       }
-      // TODO 提前获取前 30 分钟的数据
-      // initDB(codes, options).then((db) => {
-      //   options.onInit?.(db)
-      // })
+      if (this.initWithPrevMinutes > 0) {
+        try {
+          const prevResult = await this.context.dataService.fetch(
+            this.context.codes,
+            this.initWithPrevMinutes
+          )
+          this.context.emit("initData", prevResult)
+        } catch (err) {
+          this.context.emit("error", {
+            type: "initData",
+            error: err,
+          })
+          this.stop()
+          return
+        }
+      }
       let prevResult = await this.context.dataService.fetch(this.context.codes)
       const tick = () => {
         const now = dayjs()

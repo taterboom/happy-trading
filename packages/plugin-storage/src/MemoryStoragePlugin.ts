@@ -11,6 +11,11 @@ export class MemoryStoragePlugin implements Plugin {
     this.maxSize = options?.maxSize || MAX_SIZE
   }
   install(context: StoragePluginContext) {
+    context.on("initData", (result) => {
+      result.forEach((item) => {
+        simpleInsertInDb(this.db, item, this.maxSize)
+      })
+    })
     context.on("afterTick", (result) => {
       result.forEach((item) => {
         simpleInsertInDb(this.db, item, this.maxSize)

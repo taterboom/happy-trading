@@ -3,9 +3,10 @@ import { DataService } from "./DataService"
 // extend Context with log funciton
 import "./plugins/Log"
 import { PriceItem } from "./types"
+import { parseCode } from "./utils"
 
 export type ContextError = {
-  type: "fetch" | "beforeInit"
+  type: "fetch" | "beforeInit" | "initData"
   error: any
 }
 
@@ -15,11 +16,12 @@ export class Context<
     afterTick: [PriceItem[]]
     beforeInit: void
     afterInit: void
+    initData: [PriceItem[]]
     stop: void
     error: ContextError
   }
 > extends EventEmitter<T> {
-  codes: string[] = []
+  codes: string[] = [] // maybe {sh|sz}\d{6} or \d{6} etc.
   dataService: DataService = new DataService()
 
   async emitAsync<K extends EventEmitter.EventNames<T>>(
@@ -31,5 +33,9 @@ export class Context<
     // @ts-ignore
     await Promise.all(listeners.map((fn) => fn(...args)))
     return true
+  }
+
+  get standardCodes() {
+    return this.codes.map(parseCode)
   }
 }

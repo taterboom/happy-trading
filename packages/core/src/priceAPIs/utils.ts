@@ -73,3 +73,7 @@ export const randHeader = () => {
   }
   return result
 }
+
+export const MINUTES_PER_DAY = 240 // 4 hours per day
+
+export const minute2day = (m: number) => Math.ceil(m / MINUTES_PER_DAY)

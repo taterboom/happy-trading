@@ -15,6 +15,11 @@ export class JSONStoragePlugin implements Plugin {
   }
   install(context: StoragePluginContext) {
     context.on("beforeInit", () => this.initDbFromFile())
+    context.on("initData", (result) => {
+      result.forEach((item) => {
+        simpleInsertInDb(this.db, item, this.maxSize)
+      })
+    })
     context.on("afterTick", (result) => {
       result.forEach((item) => {
         simpleInsertInDb(this.db, item, this.maxSize)
