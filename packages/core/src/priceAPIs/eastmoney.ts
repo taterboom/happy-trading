@@ -60,46 +60,23 @@ const EASTMONEY_REQUEST_HEADERS = {
   "Accept-Language": "zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2",
 }
 
+// see: https://github.dev/Micro-sheep/efinance/blob/main/efinance/common/getter.py
+// 通过接口查询前面的数字.
+// url = 'https://searchapi.eastmoney.com/api/suggest/get'
+// params = (
+//   ('input', f'{keyword}'),
+//   ('type', '14'),
+//   ('token', 'D43BF722C8E33BDC906FB84D85E326E8'),
+//   ('count', f'{count}'),
+// )
 function get_quote_id(code: string) {
-  if (code.startsWith("6")) {
+  if (code.startsWith("hk")) {
+    return `124.${code.slice(2)}`
+  } else if (code.startsWith("6")) {
     return `1.${code}`
   } else {
     return `0.${code}`
   }
-}
-
-function get_latest_quote(code: string) {
-  const fields = Object.keys(EASTMONEY_QUOTE_FIELDS).join(",")
-
-  const params = {
-    OSVersion: "14.3",
-    appVersion: "6.3.8",
-    fields: fields,
-    fltt: "2",
-    plat: "Iphone",
-    product: "EFund",
-    secids: get_quote_id(code),
-    serverVersion: "6.3.6",
-    version: "6.3.8",
-    //   beg: "20231107",
-    //   end: "20231108",
-    //   klt: 101,
-    //   fqt: 1,
-  }
-
-  const url = `https://push2.eastmoney.com/api/qt/ulist.np/get?${Object.entries(params)
-    .map(([k, v]) => `${k}=${encodeURIComponent(v)}`)
-    .join(`&`)}`
-
-  console.log(url)
-
-  fetch(url, {
-    headers: EASTMONEY_REQUEST_HEADERS,
-  })
-    .then((res) => res.json())
-    .then((jsonData) => {
-      console.log(JSON.stringify(jsonData, null, 2))
-    })
 }
 
 // ndays: max 5

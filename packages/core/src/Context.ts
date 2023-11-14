@@ -21,7 +21,7 @@ export class Context<
     error: ContextError
   }
 > extends EventEmitter<T> {
-  codes: string[] = [] // maybe {sh|sz}\d{6} or \d{6} etc.
+  codes: string[] = [] // maybe {sh|sz}\d{6} or \d{6} or hk\w etc.
   dataService: DataService = new DataService()
 
   async emitAsync<K extends EventEmitter.EventNames<T>>(

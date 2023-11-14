@@ -12,11 +12,40 @@ dayjs.extend(tz)
 
 const globalState: Record<string, any> = {}
 
+const formatTimeRawStr = (timeStr: string) => {
+  let time = timeStr
+  if (!/\d/.test(time.at(0) || "")) {
+    time = time.slice(1)
+  }
+  if (!/\d/.test(time.at(-1) || "")) {
+    time = time.slice(0, -1)
+  }
+  return time
+}
+
 export default async function getStockData(rawCodes: Array<string>): Promise<Array<PriceItem>> {
   if ((rawCodes && rawCodes.length === 0) || !rawCodes) {
     return []
   }
+
+  /**
+   *
+   * American Stock Market:
+   * `gb_aapl` Apple
+   * `gb_googl` Google
+   * HongKong Stock Market:
+   * `hk00700` Tencent
+   * `hk09988` Alibaba
+   * A股沪深:
+   * `sh600519` 贵州茅台
+   * `sh601398` 工商银行
+   * A股创业板:
+   * `sz300750` 宁德时代
+   * `sz300418` 昆仑万维
+   */
   const codes = rawCodes.map(formatCode)
+  // const codes = ["hkHSTECH"]
+  // const codes = ["gb_inx"]
 
   let aStockCount = 0
   let usStockCount = 0
@@ -87,6 +116,36 @@ export default async function getStockData(rawCodes: Array<string>): Promise<Arr
               percent: "",
             }
             aStockCount += 1
+          } else if (/^hk/.test(code)) {
+            // "代码", "名称", "今开", "昨收", "最高", "最低", "最新价", "涨跌额", "涨跌幅",
+            let open = params[2]
+            let yestclose = params[3]
+            let price = params[6]
+            let high = params[4]
+            let low = params[5]
+            fixedNumber = calcFixedPriceNumber(open, yestclose, price, high, low)
+            console.log(`${params[17]} ${params[18]}`)
+            stockItem = {
+              code,
+              name: params[0],
+              open: formatNumber(open, fixedNumber, false),
+              yestclose: formatNumber(yestclose, fixedNumber, false),
+              price: formatNumber(price, fixedNumber, false),
+              low: formatNumber(low, fixedNumber, false),
+              high: formatNumber(high, fixedNumber, false),
+              volume: 0,
+              amount: 0,
+              time: dayjs
+                .tz(
+                  dayjs(
+                    `${formatTimeRawStr(params[17])} ${formatTimeRawStr(params[18])}`,
+                    "YYYY/MM/DD HH:mm"
+                  ).format("YYYY-MM-DD HH:mm:ss"),
+                  "Asia/Shanghai"
+                )
+                .format(),
+              percent: "",
+            }
           } else if (/^gb_/.test(code)) {
             symbol = code.substr(3)
             let open = params[5]
@@ -290,7 +349,6 @@ export default async function getStockData(rawCodes: Array<string>): Promise<Arr
   globalState.cnfStockCount = cnfStockCount
   globalState.hfStockCount = hfStockCount
   globalState.noDataStockCount = noDataStockCount
-
   return stockList.map((item: any) => {
     return {
       ...pick(item, ["time", "open", "high", "low", "volume", "amount"]),

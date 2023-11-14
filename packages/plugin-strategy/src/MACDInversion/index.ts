@@ -54,7 +54,6 @@ export function execute(options: {
     }
     return acc
   }, {} as EnhancedDatabase)
-  console.log("db", JSON.stringify(db["601728"], null, 2))
   const minute = dayjs().minute()
   ;([5, 30] as const).forEach((level) => {
     if (minute % level === 0) {

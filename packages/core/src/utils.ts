@@ -38,7 +38,7 @@ export function pick(obj: any, keys: string[]) {
 // sh prefix: 5, 6
 // sz prefix: 0, 1, 3
 export function formatCode(code: string) {
-  if (code.startsWith("sh") || code.startsWith("sz")) return code
+  if (code.startsWith("sh") || code.startsWith("sz") || code.startsWith("hk")) return code
   return /^(5|6)/.test(code) ? `sh${code}` : `sz${code}`
 }
 
