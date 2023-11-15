@@ -109,8 +109,8 @@ async function get_latest_ndays_quote(
         acc[key] = dayjs
           .tz(dayjs(`${cur}`, "YYYY-MM-DD HH:mm").format("YYYY-MM-DD HH:mm:ss"), "Asia/Shanghai")
           .format()
-      } else {
-        acc[key] = cur
+      } else if (["open", "close", "high", "low", "volume", "amount"].includes(key)) {
+        acc[key] = +cur
       }
       return acc
     }, {})
