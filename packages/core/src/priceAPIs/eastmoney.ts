@@ -1,5 +1,6 @@
 // https://github.dev/Micro-sheep/efinance/blob/main/efinance/common/getter.py
 
+import dayjs from "dayjs"
 import { PriceItem } from "../types"
 import { parseCode } from "../utils"
 import { MINUTES_PER_DAY, minute2day } from "./utils"
@@ -104,7 +105,13 @@ async function get_latest_ndays_quote(
     const keys = Object.values(EASTMONEY_KLINE_NDAYS_FIELDS)
     const item = chunks.reduce((acc: any, cur: any, idx: number) => {
       const key = keys[idx]
-      acc[key] = cur
+      if (key === "time") {
+        acc[key] = dayjs
+          .tz(dayjs(`${cur}`, "YYYY-MM-DD HH:mm").format("YYYY-MM-DD HH:mm:ss"), "Asia/Shanghai")
+          .format()
+      } else {
+        acc[key] = cur
+      }
       return acc
     }, {})
     item.code = code
