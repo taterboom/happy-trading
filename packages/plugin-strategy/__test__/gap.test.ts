@@ -16,10 +16,10 @@ describe("execute function", () => {
     mockProcessStockData.mockReturnValueOnce({
       5: [
         {
-          open: 23,
-          high: 23,
-          low: 23,
-          close: 23,
+          open: 24,
+          high: 24,
+          low: 24,
+          close: 24,
           time: "2021-01-01 15:00:00",
           code: "600030",
           volume: 1,
@@ -47,7 +47,7 @@ describe("execute function", () => {
 
     expect(mockOnOk.mock.calls[0][0]?.raw).toMatchObject({
       dir: "up",
-      diff: 2,
+      diff: ((25 - 24) / 24) * 100,
     })
   })
 
@@ -56,10 +56,10 @@ describe("execute function", () => {
     mockProcessStockData.mockReturnValueOnce({
       5: [
         {
-          open: 23,
-          high: 23,
-          low: 23,
-          close: 23,
+          open: 22,
+          high: 22,
+          low: 22,
+          close: 22,
           time: "2021-01-01 15:00:00",
           code: "600030",
           volume: 1,
@@ -87,7 +87,7 @@ describe("execute function", () => {
 
     expect(mockOnOk.mock.calls[0][0]?.raw).toMatchObject({
       dir: "down",
-      diff: 2,
+      diff: ((22 - 21) / 22) * 100,
     })
   })
 
@@ -96,20 +96,20 @@ describe("execute function", () => {
     mockProcessStockData.mockReturnValueOnce({
       5: [
         {
-          open: 23,
-          high: 23,
-          low: 23,
-          close: 23,
+          open: 22,
+          high: 22,
+          low: 22,
+          close: 22,
           time: "2021-01-01 15:00:00",
           code: "600030",
           volume: 1,
           amount: 1,
         },
         {
-          open: 22.5,
-          high: 22.5,
-          low: 22.5,
-          close: 22.5,
+          open: 22.1,
+          high: 22.1,
+          low: 22.1,
+          close: 22.1,
           time: "2021-01-02 09:35:00",
           code: "600030",
           volume: 1,

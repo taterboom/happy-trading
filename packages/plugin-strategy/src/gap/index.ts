@@ -47,6 +47,10 @@ type EnhancedDatabase = {
  */
 type State = "down" | "up"
 
+const generatePercentPoint = (newEl: number, oldEl: number) => {
+  return Math.abs((newEl - oldEl) / oldEl) * 100
+}
+
 // one tick per minute
 export function execute(options: {
   db: Database
@@ -68,7 +72,7 @@ export function execute(options: {
     if (last1 && last2) {
       if (last1.open > last2.high) {
         // 高开
-        const diff = last1.open - last2.high
+        const diff = generatePercentPoint(last1.open, last2.high)
         if (diff >= threshold) {
           onOk?.(
             notifyInfo({
@@ -83,7 +87,7 @@ export function execute(options: {
       }
       if (last1.open < last2.low) {
         // 低开
-        const diff = last2.low - last1.open
+        const diff = generatePercentPoint(last1.open, last2.low)
         if (diff >= threshold) {
           onOk?.(
             notifyInfo({
@@ -108,7 +112,9 @@ function notifyInfo(options: {
   kItems: PriceItem[]
 }): NotificationOptions {
   let title = `🟡 ${options.code} ${options.level}分钟 ${
-    options.dir === "up" ? `高开${options.diff} 注意卖出` : `低开${options.diff}`
+    options.dir === "up"
+      ? `高开${options.diff.toFixed(1)}% 注意卖出`
+      : `低开${options.diff.toFixed(1)}%`
   }`
   const body = `当前价格: ${options.kItems[options.kItems.length - 1]?.close}`
   return {
