@@ -4,6 +4,7 @@ import { DingDingNotificationPlugin } from "@happy-trading/plugin-notification/d
 import { EmailNotificationPlugin } from "@happy-trading/plugin-notification/dist/EmailNotification"
 import { MemoryStoragePlugin } from "@happy-trading/plugin-storage"
 import { MACDInversion } from "@happy-trading/plugin-strategy/dist/MACDInversion"
+import { Gap } from "@happy-trading/plugin-strategy/dist/gap"
 import * as dotenv from "dotenv"
 import { NotionGetInfoPlugin } from "./NotionGetInfoPlugin"
 
@@ -48,5 +49,6 @@ new Bot({ debug: process.env.NODE_ENV === "development" })
   )
   .use(new MonitorPlugin())
   // .use(new DivergencePlugin())
+  .use(new Gap())
   .use(new MACDInversion())
   .start()
