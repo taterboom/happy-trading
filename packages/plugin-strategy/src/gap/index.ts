@@ -8,7 +8,7 @@ import { processStockData } from "@happy-trading/utils"
  */
 
 export class Gap implements Plugin {
-  threshold = 1.1
+  threshold = 0.8
   constructor(threshold?: number) {
     if (threshold) {
       this.threshold = threshold
@@ -51,7 +51,7 @@ const generatePercentPoint = (newEl: number, oldEl: number) => {
   return Math.abs((newEl - oldEl) / oldEl) * 100
 }
 
-// one tick per minute
+// 每分钟都会执行，应该5分钟执行一次，但是每分钟都会通知，效果也挺好
 export function execute(options: {
   db: Database
   codes: string[]
