@@ -4,7 +4,7 @@ FROM base AS installer
 RUN apk add --no-cache libc6-compat
 RUN apk update
 WORKDIR /app
-RUN npm install -g pnpm@7.3.0
+RUN npm install -g pnpm
 RUN npm install -g turbo
 COPY . .
 RUN pnpm install --frozen-lockfile

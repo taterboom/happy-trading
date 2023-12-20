@@ -2,7 +2,7 @@ import { Bot } from "@happy-trading/core"
 import { MonitorPlugin } from "@happy-trading/plugin-monitor"
 import { DingDingNotificationPlugin } from "@happy-trading/plugin-notification/dist/DingDingNotification"
 import { EmailNotificationPlugin } from "@happy-trading/plugin-notification/dist/EmailNotification"
-import { MemoryStoragePlugin } from "@happy-trading/plugin-storage"
+import { JSONStoragePlugin } from "@happy-trading/plugin-storage"
 import { MACDInversion } from "@happy-trading/plugin-strategy/dist/MACDInversion"
 import { Gap } from "@happy-trading/plugin-strategy/dist/gap"
 import * as dotenv from "dotenv"
@@ -17,8 +17,8 @@ new Bot({ debug: process.env.NODE_ENV === "development" })
       notionKey: process.env.NOTION_KEY!,
     })
   )
-  // .use(new JSONStoragePlugin({ filepath: "./db.json" }))
-  .use(new MemoryStoragePlugin())
+  .use(new JSONStoragePlugin({ filepath: "./db.json" }))
+  // .use(new MemoryStoragePlugin())
   .use(
     new DingDingNotificationPlugin(
       {

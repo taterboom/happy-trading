@@ -124,7 +124,6 @@ export default async function getStockData(rawCodes: Array<string>): Promise<Arr
             let high = params[4]
             let low = params[5]
             fixedNumber = calcFixedPriceNumber(open, yestclose, price, high, low)
-            console.log(`${params[17]} ${params[18]}`)
             stockItem = {
               code,
               name: params[0],
