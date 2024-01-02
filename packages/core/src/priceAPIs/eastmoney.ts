@@ -73,7 +73,7 @@ const EASTMONEY_REQUEST_HEADERS = {
 function get_quote_id(code: string) {
   if (code.startsWith("hk")) {
     return `124.${code.slice(2)}`
-  } else if (code.startsWith("6")) {
+  } else if (code.startsWith("6") || code.startsWith("5")) {
     return `1.${code}`
   } else {
     return `0.${code}`

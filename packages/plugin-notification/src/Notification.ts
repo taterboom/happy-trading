@@ -44,12 +44,10 @@ export abstract class Notification<C = any, T extends NotificationContext = Noti
   }
 
   async onError(context: Context, e: any) {
-    if (e?.type === "beforeInit") {
-      this.onNotify(context, {
-        level: "alert",
-        title: "Happy-Trading Error",
-        body: JSON.stringify(e),
-      })
-    }
+    this.onNotify(context, {
+      level: "alert",
+      title: "Happy-Trading Error",
+      body: JSON.stringify(e, null, 2),
+    })
   }
 }

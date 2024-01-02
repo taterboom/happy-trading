@@ -119,8 +119,8 @@ export class Bot {
   }
 
   stop() {
-    this._jobs.forEach((job) => job.stop())
-    this._jobs = []
+    // this._jobs.forEach((job) => job.stop())
+    // this._jobs = []
     if (this._intervalId) {
       clearInterval(this._intervalId)
     }

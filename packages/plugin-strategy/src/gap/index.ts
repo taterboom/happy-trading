@@ -69,7 +69,6 @@ export function execute(options: {
   codes.forEach((code) => {
     const last1 = db[code][5].at(-1)
     const last2 = db[code][5].at(-2)
-    console.log(JSON.stringify({ last1, last2 }, null, 2))
     if (last1 && last2) {
       if (last1.open > last2.high) {
         // 高开
