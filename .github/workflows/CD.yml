@@ -51,7 +51,7 @@ jobs:
           script: |
             docker pull ${{ env.REGISTRY }}/${{ github.repository }}:${{ env.IMAGE_TAG }}
             docker stop ${{ secrets.DEPLOY_CONTAINER_NAME }}
-            docker system prune -f
+            docker system prune -af
             docker run --name ${{ secrets.DEPLOY_CONTAINER_NAME }} \
                 -e NOTIFICATION_DINGDING_WEBHOOK="${{ secrets.NOTIFICATION_DINGDING_WEBHOOK }}" \
                 -e NOTIFICATION_EMAIL_HOST="${{ secrets.NOTIFICATION_EMAIL_HOST }}" \
