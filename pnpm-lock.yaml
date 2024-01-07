@@ -161,10 +161,6 @@ importers:
       dayjs:
         specifier: ^1.11.9
         version: 1.11.9
-    devDependencies:
-      '@happy-trading/core':
-        specifier: workspace:^0.0.1-beta.0
-        version: link:../core
 
 packages:
 

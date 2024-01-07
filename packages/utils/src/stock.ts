@@ -1,5 +1,15 @@
-import { PriceItem } from "@happy-trading/core"
 import dayjs from "dayjs"
+
+export type PriceItem = {
+  time: string
+  code: string
+  open: number
+  high: number
+  low: number
+  close: number
+  volume: number
+  amount: number
+}
 
 function computeChunkData(chunk: PriceItem[]) {
   const code = chunk[0].code

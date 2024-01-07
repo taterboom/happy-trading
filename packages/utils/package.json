@@ -14,9 +14,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "@happy-trading/core": "workspace:^0.0.1-beta.0"
-  },
   "dependencies": {
     "dayjs": "^1.11.9"
   }
