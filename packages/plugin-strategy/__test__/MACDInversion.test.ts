@@ -6,7 +6,7 @@ jest.mock("../src/utils", () => {
     })),
   }
 })
-const mockMinute = jest.fn(() => 1)
+const mockMinute = jest.fn(() => 30)
 jest.mock("dayjs", () => {
   return jest.fn(() => ({
     minute: mockMinute,
@@ -24,7 +24,7 @@ describe("MACDInversion", () => {
     }
     const mockNotifyInfo = jest.fn()
     mockTAMACD.mockReturnValueOnce({ hist: [1, 2, 3] })
-    mockMinute.mockReturnValueOnce(5)
+    mockMinute.mockReturnValueOnce(30)
     execute({ db, codes: ["600030"], onOk: mockNotifyInfo })
     expect(mockNotifyInfo).toBeCalledTimes(0)
   })
@@ -35,7 +35,7 @@ describe("MACDInversion", () => {
     }
     const mockNotifyInfo = jest.fn()
     mockTAMACD.mockReturnValueOnce({ hist: [1, 2, 1] })
-    mockMinute.mockReturnValueOnce(5)
+    mockMinute.mockReturnValueOnce(30)
     execute({ db, codes: ["600030"], onOk: mockNotifyInfo })
     expect(mockNotifyInfo.mock.calls[0][0]?.raw?.dir).toBe("crossdown")
   })
@@ -46,7 +46,7 @@ describe("MACDInversion", () => {
     }
     const mockNotifyInfo = jest.fn()
     mockTAMACD.mockReturnValueOnce({ hist: [1, 0, 1] })
-    mockMinute.mockReturnValueOnce(5)
+    mockMinute.mockReturnValueOnce(30)
     execute({ db, codes: ["600030"], onOk: mockNotifyInfo })
     expect(mockNotifyInfo.mock.calls[0][0]?.raw?.dir).toBe("crossup")
   })
@@ -57,7 +57,7 @@ describe("MACDInversion", () => {
     }
     const mockNotifyInfo = jest.fn()
     mockTAMACD.mockReturnValueOnce({ hist: [-1, 1] })
-    mockMinute.mockReturnValueOnce(5)
+    mockMinute.mockReturnValueOnce(30)
     execute({ db, codes: ["600030"], onOk: mockNotifyInfo })
     expect(mockNotifyInfo.mock.calls[0][0]?.raw?.dir).toBe("up")
   })
@@ -68,7 +68,7 @@ describe("MACDInversion", () => {
     }
     const mockNotifyInfo = jest.fn()
     mockTAMACD.mockReturnValueOnce({ hist: [1, -1] })
-    mockMinute.mockReturnValueOnce(5)
+    mockMinute.mockReturnValueOnce(30)
     execute({ db, codes: ["600030"], onOk: mockNotifyInfo })
     expect(mockNotifyInfo.mock.calls[0][0]?.raw?.dir).toBe("down")
   })

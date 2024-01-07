@@ -2,6 +2,7 @@ const mockProcessStockData = jest.fn()
 jest.mock("@happy-trading/utils", () => {
   return {
     processStockData: mockProcessStockData,
+    getName: jest.fn(),
   }
 })
 
