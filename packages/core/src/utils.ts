@@ -1,4 +1,5 @@
 import { PriceItem } from "./types"
+export { formatCode, parseCode } from "@happy-trading/utils"
 
 export function retry<T>(fn: () => Promise<T>, times: number = 2): Promise<T> {
   return fn().catch((err) => {
@@ -35,13 +36,13 @@ export function pick(obj: any, keys: string[]) {
   }, {} as any)
 }
 
-// sh prefix: 5, 6
-// sz prefix: 0, 1, 3
-export function formatCode(code: string) {
-  if (code.startsWith("sh") || code.startsWith("sz") || code.startsWith("hk")) return code
-  return /^(5|6)/.test(code) ? `sh${code}` : `sz${code}`
-}
+// // sh prefix: 5, 6
+// // sz prefix: 0, 1, 3
+// export function formatCode(code: string) {
+//   if (code.startsWith("sh") || code.startsWith("sz") || code.startsWith("hk")) return code
+//   return /^(5|6)/.test(code) ? `sh${code}` : `sz${code}`
+// }
 
-export function parseCode(code: string) {
-  return code.match(/(\d{6})/)?.[0] || code
-}
+// export function parseCode(code: string) {
+//   return code.match(/(\d{6})/)?.[0] || code
+// }

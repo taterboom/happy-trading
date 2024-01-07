@@ -1,7 +1,7 @@
 import type { Context, Plugin, PriceItem } from "@happy-trading/core"
 import type { NotificationContext, NotificationOptions } from "@happy-trading/plugin-notification"
 import type { Database, StoragePluginContext } from "@happy-trading/plugin-storage"
-import { processStockData } from "@happy-trading/utils"
+import { getName, parseCode, processStockData } from "@happy-trading/utils"
 import dayjs from "dayjs"
 import { Strategy } from "./strategies"
 
@@ -90,7 +90,9 @@ export function executeStrategies(options: {
 
 function notifyInfo(strategy: StrategyConfig, kItems: PriceItem[]): NotificationOptions {
   const flag = strategy.strategy.startsWith("sell") ? "🟢" : "🔴"
-  const title = `${flag} ${strategy.code} ${strategy.strategy} 指标已达到!`
+  const title = `${flag} ${strategy.code} ${getName(parseCode(strategy.code))} ${
+    strategy.strategy
+  } 指标已达到!`
   const body = `当前价格: ${kItems[kItems.length - 1].close} 
 options: ${strategy.options} 
 level: ${strategy.level} 

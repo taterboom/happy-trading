@@ -1,7 +1,7 @@
 import { Context, Plugin, PriceItem } from "@happy-trading/core"
 import { NotificationContext, NotificationOptions } from "@happy-trading/plugin-notification"
 import { Database, StoragePluginContext } from "@happy-trading/plugin-storage"
-import { processStockData } from "@happy-trading/utils"
+import { getName, processStockData } from "@happy-trading/utils"
 import dayjs from "dayjs"
 import tz from "dayjs/plugin/timezone"
 import utc from "dayjs/plugin/utc"
@@ -119,7 +119,7 @@ export function monitor(data: Database, config: MonitorConfig): NotificationOpti
   const body = warningInfo
     .map(
       (item) =>
-        `|- ${item[0]} ${item[1]} ${item[2]
+        `|- ${item[0]} ${getName(item[0])} ${item[1]} ${item[2]
           .map((warning: Warning) => `${warning[0]}分钟跌幅${percent(warning[1])}`)
           .join(", ")}`
     )

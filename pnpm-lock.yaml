@@ -54,6 +54,9 @@ importers:
 
   packages/core:
     dependencies:
+      '@happy-trading/utils':
+        specifier: workspace:0.0.1-beta.0
+        version: link:../utils
       axios:
         specifier: ^1.4.0
         version: 1.6.1

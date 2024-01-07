@@ -1,7 +1,7 @@
 import type { Context, Plugin, PriceItem } from "@happy-trading/core"
 import type { NotificationContext, NotificationOptions } from "@happy-trading/plugin-notification"
 import type { Database, StoragePluginContext } from "@happy-trading/plugin-storage"
-import { processStockData } from "@happy-trading/utils"
+import { getName, processStockData } from "@happy-trading/utils"
 
 /**
  * 监控5分钟缺口
@@ -111,7 +111,7 @@ function notifyInfo(options: {
   diff: number
   kItems: PriceItem[]
 }): NotificationOptions {
-  let title = `🟡 ${options.code} ${options.level}分钟 ${
+  let title = `🟡 ${options.code} ${getName(options.code)} ${options.level}分钟 ${
     options.dir === "up"
       ? `高开${options.diff.toFixed(1)}% 注意卖出`
       : `低开${options.diff.toFixed(1)}%`

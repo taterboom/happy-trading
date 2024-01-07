@@ -1,7 +1,7 @@
 import type { Context, Plugin, PriceItem } from "@happy-trading/core"
 import type { NotificationContext, NotificationOptions } from "@happy-trading/plugin-notification"
 import type { Database, StoragePluginContext } from "@happy-trading/plugin-storage"
-import { processStockData } from "@happy-trading/utils"
+import { getName, processStockData } from "@happy-trading/utils"
 import dayjs from "dayjs"
 import { createTA } from "../utils"
 
@@ -55,10 +55,9 @@ export function execute(options: {
     return acc
   }, {} as EnhancedDatabase)
   const minute = dayjs().minute()
-  ;([5, 30] as const).forEach((level) => {
+  ;([/*5, */ 30] as const).forEach((level) => {
     if (minute % level === 0) {
       // 循环codes 判断当前level的MACD是否反转
-      // 30分钟Alert，5分钟Notify
       codes.forEach((code) => {
         let state: State | null = null
         const ta = createTA(db[code][level])
@@ -105,17 +104,17 @@ function notifyInfo(options: {
   let title = ""
   if (options.dir === "crossup" || options.dir === "crossdown") {
     const flag = options.dir === "crossup" ? "🟢" : "🔴"
-    title = `${flag} ${options.code} ${options.level}分钟 MACD 反转`
+    title = `${flag} ${options.code} ${getName(options.code)} ${options.level}分钟 MACD 反转`
   }
   if (options.dir === "up" || options.dir === "down") {
     const flag = options.dir === "up" ? "金叉" : "死叉"
-    title = `🟡 ${options.code} ${options.level}分钟 MACD ${flag}`
+    title = `🟡 ${options.code} ${getName(options.code)} ${options.level}分钟 MACD ${flag}`
   }
   const body = `当前价格: ${options.kItems[options.kItems.length - 1]?.close}`
   return {
     title,
     body,
     raw: options,
-    level: options.level === 30 ? "alert" : "warn",
+    level: /*options.level === 30 ? "alert" : */ "warn",
   }
 }
