@@ -14,11 +14,14 @@ export class MACDInversion implements Plugin {
           db,
           codes: context.standardCodes,
           onOk: (result) => {
-            context.emit("notify", { ...result })
+            context.emit("notify", { ...result, from: "MACDInversionPlugin" })
           },
         })
       } catch (err: any) {
-        context.log("MACDInversion Error", err?.message || "error")
+        context.log("MACDInversion Error", {
+          message: err?.message || "error",
+          from: "MACDInversionPlugin",
+        })
         throw err
       }
     })

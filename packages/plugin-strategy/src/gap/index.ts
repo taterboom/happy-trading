@@ -23,11 +23,11 @@ export class Gap implements Plugin {
           codes: context.standardCodes,
           threshold: this.threshold,
           onOk: (result) => {
-            context.emit("notify", { ...result })
+            context.emit("notify", { ...result, from: "GapPlugin" })
           },
         })
       } catch (err: any) {
-        context.log("Gap Error", err?.message || "error")
+        context.log("Gap Error", { message: err?.message || "error", from: "GapPlugin" })
         throw err
       }
     })

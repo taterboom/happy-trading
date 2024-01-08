@@ -2,6 +2,7 @@ import { EventEmitter } from "eventemitter3"
 import { DataService } from "./DataService"
 // extend Context with log funciton
 import "./plugins/Log"
+import type { LogEventParams } from "./plugins/Log"
 import { PriceItem } from "./types"
 import { parseCode } from "./utils"
 
@@ -19,6 +20,7 @@ export class Context<
     initData: [PriceItem[]]
     stop: void
     error: ContextError
+    log: LogEventParams
   }
 > extends EventEmitter<T> {
   codes: string[] = [] // maybe {sh|sz}\d{6} or \d{6} or hk\w etc.

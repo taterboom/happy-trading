@@ -27,11 +27,14 @@ export class DivergencePlugin implements Plugin {
           db,
           strategies: this.strategies,
           onOk: (result) => {
-            context.emit("notify", { ...result, level: "alert" })
+            context.emit("notify", { ...result, level: "alert", from: "DivergencePlugin" })
           },
         })
       } catch (err: any) {
-        context.log("DivergencePlugin Error", err?.message || "error")
+        context.log("DivergencePlugin Error", {
+          message: err?.message || "error",
+          from: "DivergencePlugin",
+        })
         throw err
       }
     })

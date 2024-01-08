@@ -5,4 +5,5 @@ export interface NotificationOptions<T = any> {
   title: string
   body: string
   raw?: T
+  from?: string
 }

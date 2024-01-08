@@ -13,14 +13,25 @@ declare module "../Context" {
   }
 }
 
+export type LogEventParams = { title: string; body?: any; from?: string }
+
 export class Log implements Plugin {
   static log(title: string, body?: any) {
     console.log(
-      `${dayjs.utc().tz("Asia/Shanghai").format("YYYY-MM-DD HH:mm")} [${title}] ${body || ""}`
+      `${dayjs.utc().tz("Asia/Shanghai").format("YYYY-MM-DD HH:mm")} [${title}] ${JSON.stringify(
+        body
+      )}`
     )
   }
   install(context: Context) {
-    context.log = Log.log
+    context.log = (title, body) => {
+      Log.log(title, body)
+      context.emit("log", {
+        title,
+        body,
+        from: body?.from,
+      })
+    }
     context.on("afterInit", () => {
       context.log("Init ok")
     })

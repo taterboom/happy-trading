@@ -44,10 +44,17 @@ export class MonitorPlugin implements Plugin {
         const db = await context.getStorage()
         const notification = monitor(db, this.config)
         if (notification) {
-          return context.emit("notify", { ...notification, level: "warn" })
+          return context.emit("notify", {
+            ...notification,
+            level: "warn",
+            from: "MonitorPlugin",
+          })
         }
       } catch (err: any) {
-        context.log("MonitorPlugin Error", err?.message || "error")
+        context.log("MonitorPlugin Error", {
+          message: err?.message || "error",
+          from: "MonitorPlugin",
+        })
         throw err
       }
     })
